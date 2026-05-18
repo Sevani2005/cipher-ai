@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher AI | Agentic Sensitive Information Masking Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="glow-bg-secondary"></div>
+
+    <header class="app-header">
+        <div class="header-logo-section">
+            <div class="logo-shield">
+                <span class="shield-icon">🛡️</span>
+                <div class="shield-pulse"></div>
+            </div>
+            <div class="brand-text">
+                <h1>CIPHER <span class="accent-text">AI</span></h1>
+                <p>Agentic Data Redaction & Masking Engine</p>
+            </div>
+        </div>
+        
+        <div class="api-key-container">
+            <div class="api-status-badge" id="apiStatusBadge">
+                <span class="status-dot online" style="background-color: var(--accent-peach); box-shadow: 0 0 8px var(--accent-peach);"></span>
+                <span class="status-text">Local Rules Mode</span>
+            </div>
+            <div class="api-provider-wrapper" style="margin-left: 10px;">
+                <select id="apiProviderSelect" class="provider-select" style="background: rgba(24, 24, 37, 0.8); border: 1px solid rgba(205, 214, 244, 0.15); color: #cdd6f4; padding: 6px 12px; border-radius: 6px; font-family: 'Space Grotesk', sans-serif; cursor: pointer; outline: none; transition: border 0.2s;">
+                    <option value="local">Local Engine</option>
+                    <option value="groq">Groq Cloud (Llama 3)</option>
+                    <option value="gemini">Google Gemini (Flash)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-workspace">
+        <!-- LEFT COLUMN: SETTINGS & UPLOADER -->
+        <section class="control-panel panel">
+            <div class="panel-header">
+                <h2>1. Control Center</h2>
+                <span class="panel-subtitle">Configure Redaction & Masking Rules</span>
+            </div>
+
+            <!-- DRAG & DROP ZONE -->
+            <div class="upload-container" id="dropZone">
+                <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.pptx,.docx,.txt,.csv,.json" style="display: none;">
+                <div class="upload-icon-wrapper">
+                    <svg class="upload-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                </div>
+                <div class="upload-text">
+                    <span class="highlight-text">Drag & Drop files here</span>
+                    <span class="sub-text">or click to browse local files</span>
+                </div>
+                <div class="supported-formats">
+                    <span>PDF • PPTX • DOCX • PNG • JPG • TXT</span>
+                </div>
+                
+                <!-- Uploading state inside uploader -->
+                <div class="file-loaded-state" id="fileLoadedState" style="display: none;">
+                    <div class="file-info-pill">
+                        <span class="file-icon" id="loadedFileIcon">📄</span>
+                        <div class="file-details">
+                            <span class="file-name" id="loadedFileName">sample-document.pdf</span>
+                            <span class="file-size" id="loadedFileSize">2.4 MB</span>
+                        </div>
+                        <button class="remove-file-btn" id="removeFileBtn" title="Remove File">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS SIDEBAR -->
+            <form id="maskSettingsForm" class="settings-form">
+                <!-- Masking Style Group -->
+                <div class="settings-group">
+                    <label class="group-label">Masking Aesthetics</label>
+                    <div class="style-cards-grid">
+                        <label class="style-card">
+                            <input type="radio" name="style" value="redact" checked>
+                            <span class="style-visual redact-block">⬛</span>
+                            <span class="style-name">Redact Block</span>
+                        </label>
+                        <label class="style-card">
+                            <input type="radio" name="style" value="blur">
+                            <span class="style-visual blur-block">🌫️</span>
+                            <span class="style-name">Gaussian Blur</span>
+                        </label>
+                        <label class="style-card">
+                            <input type="radio" name="style" value="xxxx">
+                            <span class="style-visual xxxx-block">❌</span>
+                            <span class="style-name">Character X</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- PDF specific mode -->
+                <div class="settings-group" id="pdfModeGroup" style="display: none;">
+                    <label class="group-label">PDF Processing Engine</label>
+                    <div class="toggle-switch-wrapper">
+                        <label class="switch-card">
+                            <input type="radio" name="pdf_mode" value="vector" checked>
+                            <div class="switch-content">
+                                <span class="title">Secure Vector Redaction</span>
+                                <span class="desc">Deletes raw text records safely</span>
+                            </div>
+                        </label>
+                        <label class="switch-card">
+                            <input type="radio" name="pdf_mode" value="visual">
+                            <div class="switch-content">
+                                <span class="title">Visual Image Flattening</span>
+                                <span class="desc">Renders pages & masks pixels (Scanned)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Category Filtering Checkboxes -->
+                <div class="settings-group">
+                    <label class="group-label">Personally Identifiable Data (PII)</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-pill">
+                            <input type="checkbox" id="chkName" name="name" checked>
+                            <span class="pill-btn">👤 Names</span>
+                        </label>
+                        <label class="checkbox-pill">
+                            <input type="checkbox" id="chkEmail" name="email" checked>
+                            <span class="pill-btn">✉️ Emails</span>
+                        </label>
+                        <label class="checkbox-pill">
+                            <input type="checkbox" id="chkPhone" name="phone" checked>
+                            <span class="pill-btn">📞 Phone Numbers</span>
+                        </label>
+                        <label class="checkbox-pill">
+                            <input type="checkbox" id="chkFinancial" name="financial" checked>
+                            <span class="pill-btn">💳 Banks & Govt IDs (Aadhaar)</span>
+                        </label>
+                        <label class="checkbox-pill">
+                            <input type="checkbox" id="chkCredentials" name="credentials" checked>
+                            <span class="pill-btn">🔑 API Keys / Passwords</span>
+                        </label>
+                        <label class="checkbox-pill">
+                            <input type="checkbox" id="chkAddress" name="address" checked>
+                            <span class="pill-btn">📍 Addresses</span>
+                        </label>
+                        <label class="checkbox-pill full-width-pill">
+                            <input type="checkbox" id="chkOther" name="other" checked>
+                            <span class="pill-btn">⚙️ Other Metadata</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Custom keywords/regex -->
+                <div class="settings-group">
+                    <label class="group-label">Custom Redaction Rules</label>
+                    <div class="custom-inputs">
+                        <div class="input-field">
+                            <label for="customKeywords">Custom Keywords (comma-separated)</label>
+                            <input type="text" id="customKeywords" placeholder="e.g. SecretProject, ConfidentialTerm, CompanyName">
+                        </div>
+                        <div class="input-field">
+                            <label for="customRegex">Custom Regex Patterns (comma-separated)</label>
+                            <input type="text" id="customRegex" placeholder="e.g. \b[A-Z]{3}-\d{4}\b (Project codes)">
+                        </div>
+                        <div class="input-field">
+                            <label for="userPrompt">Prompt-Based Redaction (Ask AI to hide anything in the image/text)</label>
+                            <input type="text" id="userPrompt" placeholder="e.g. hide the person's face, mask the barcode, redact the signature">
+                            <div class="prompt-chips" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                                <span class="prompt-chip" data-prompt="hide the person's face">👤 Hide faces</span>
+                                <span class="prompt-chip" data-prompt="mask the barcode and QR code">📊 Mask barcodes</span>
+                                <span class="prompt-chip" data-prompt="redact the hand-written signature">✍️ Redact signatures</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" id="executeMaskingBtn" class="glowing-btn" disabled>
+                    <span class="btn-shine"></span>
+                    <span class="btn-text">Execute AI Agent</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- RIGHT COLUMN: SPLIT SCREEN PREVIEW & LOGS -->
+        <section class="display-panel panel">
+            <div class="panel-header header-with-tabs">
+                <div>
+                    <h2>2. Verification & Preview Canvas</h2>
+                    <span class="panel-subtitle">Real-time side-by-side visual analysis</span>
+                </div>
+                <div class="canvas-actions" id="canvasActions" style="display: none;">
+                    <button class="icon-btn" id="zoomInBtn" title="Zoom In">+</button>
+                    <button class="icon-btn" id="zoomOutBtn" title="Zoom Out">-</button>
+                    <button class="icon-btn" id="resetZoomBtn" title="Reset">⟲</button>
+                </div>
+            </div>
+
+            <!-- COMPARISON CANVAS CONTAINER -->
+            <div class="canvas-viewport" id="canvasViewport">
+                <!-- Idle State -->
+                <div class="viewport-idle" id="viewportIdle">
+                    <div class="scanner-laser"></div>
+                    <span class="scan-icon">🔍</span>
+                    <p class="idle-title">Awaiting Document Upload</p>
+                    <p class="idle-desc">Upload a PDF or image in the uploader to trigger visual preview parsing.</p>
+                </div>
+
+                <!-- Active Split Preview Screen -->
+                <div class="split-preview-container" id="splitPreviewContainer" style="display: none;">
+                    <!-- Original Panel -->
+                    <div class="preview-panel original-panel">
+                        <div class="preview-badge original">ORIGINAL FILE</div>
+                        <div class="preview-image-wrapper">
+                            <img id="originalPreviewImg" src="" alt="Original Preview">
+                        </div>
+                    </div>
+
+                    <!-- Comparison Divider Line -->
+                    <div class="preview-divider">
+                        <div class="divider-glow"></div>
+                        <div class="divider-handle">↔</div>
+                    </div>
+
+                    <!-- Masked Panel -->
+                    <div class="preview-panel masked-panel">
+                        <div class="preview-badge masked">MASKED SECURE</div>
+                        <div class="preview-image-wrapper">
+                            <img id="maskedPreviewImg" src="" alt="Masked Preview">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Screen -->
+                <div class="processing-overlay" id="processingOverlay" style="display: none;">
+                    <div class="loader-shield">
+                        <div class="spinner"></div>
+                        <span class="processing-logo">🛡️</span>
+                    </div>
+                    <span class="processing-title">Agent Analyzing Document...</span>
+                    <span class="processing-desc">Querying Gemini API and generating replacement vectors.</span>
+                </div>
+            </div>
+
+            <!-- AGENT TERMINAL / AUDIT LOG -->
+            <div class="agent-terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="terminal-title">AGENT AUDIT CONSOLE</span>
+                    <span class="terminal-status" id="agentStatus">IDLE</span>
+                </div>
+                <div class="terminal-output" id="terminalOutput">
+                    <div class="log-line type-agent">> Secure connection established. Cipher AI system ready.</div>
+                    <div class="log-line type-info">> Waiting for user to configure PII rules and supply document...</div>
+                </div>
+            </div>
+
+            <!-- DOWNLOAD CONTAINER -->
+            <div class="download-container" id="downloadContainer" style="display: none;">
+                <div class="download-card">
+                    <div class="download-info">
+                        <span class="check-badge">✓</span>
+                        <div class="download-meta">
+                            <h4>Redaction Complete!</h4>
+                            <p id="downloadFileMeta">File processed in original format.</p>
+                        </div>
+                    </div>
+                    <a href="#" id="downloadLink" class="download-glow-btn">
+                        <span>Download Masked File</span>
+                        <span class="arrow-icon">↓</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>© 2026 Cipher AI Redaction Engine. Built with Gemini Multimodal Intelligence. Secure Local Processing.</p>
+    </footer>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Main JavaScript Logic -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

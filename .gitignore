@@ -1,0 +1,32 @@
+# Local API Credentials
+.env
+
+# Node packages and build outputs
+node_modules/
+dist/
+.svelte-kit/
+.next/
+build/
+
+# Python compiler caches and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Local staging uploads and processed redaction databases
+uploads/*
+processed/*
+!uploads/.gitkeep
+!processed/.gitkeep
+test_clean.jpg
+
+# OS temporary files
+.DS_Store
+Thumbs.db

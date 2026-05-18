@@ -1,0 +1,27 @@
+--- CONFIDENTIAL PROJECT DOCUMENTATION ---
+Security Classification: Level 5 (Restricted)
+Project Codename: Project QuantumX
+Date: May 18, 2026
+
+PRIMARY CONTACT INFORMATION:
+Lead Investigator: Professor Sarah Jenkins
+Secure Email: sarah.jenkins@quantumlabs.org
+Primary Telephone: +1-555-019-2834
+Backup Cell: +91 98765 43210 (India Office Contact)
+
+FACILITY DETAILS:
+Lab Location: 452 Innovation Boulevard, Suite 900, Austin, Texas 78701
+Alternate site: Block C, Science Park Phase 2, Chennai, Tamil Nadu 600113
+
+CREDENTIALS & ACCESS TOKENS:
+Main Database API Key: xoxb-MOCK_KEY_REDACTED_123456
+Root Admin Password: SuperSecretShield!2026
+SSH Private Key Fingerprint: SHA256:mQ8ZtYp9W4kL2c5R7u1e0jXvSfYgTaDr
+
+BILLING & FINANCIAL LEDGER:
+Operations Card (Visa): 4111-2222-3333-4444 (Exp: 12/28)
+Security Deposit Bank Acc: 0987-1234-5678-9012 (Routing: 121140024)
+Vendor SSN / PAN: Aadhaar No: 3344-5566-7788
+
+SUMMARY NOTES:
+Please ensure all project details are kept secure. If you share this file, mask Sarah Jenkins' contact details and the API keys immediately. Use Cipher AI for secure masking before publishing online.

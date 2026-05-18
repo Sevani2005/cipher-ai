@@ -1,0 +1,8 @@
+flask
+pymupdf
+python-pptx
+python-docx
+pillow
+opencv-python
+google-generativeai
+python-dotenv
