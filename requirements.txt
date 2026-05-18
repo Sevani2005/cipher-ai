@@ -3,6 +3,7 @@ pymupdf
 python-pptx
 python-docx
 pillow
-opencv-python
+opencv-python-headless
 google-generativeai
 python-dotenv
+gunicorn
