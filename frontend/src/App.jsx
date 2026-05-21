@@ -60,6 +60,7 @@ export default function App() {
   
   // App Config States
   const [apiProvider, setApiProvider] = useState('gemini');
+  const [apiKey, setApiKey] = useState(localStorage.getItem('cipher_api_key') || '');
   const [maskStyle, setMaskStyle] = useState('blur'); // blur, redact (blackout), xxxx (pixelate)
   const [pdfMode, setPdfMode] = useState('visual'); // visual, vector
   
@@ -405,6 +406,7 @@ export default function App() {
     const formData = new FormData();
     formData.append('file', selectedFile);
     formData.append('api_provider', apiProvider);
+    formData.append('api_key', apiKey);
     formData.append('style', maskStyle);
     formData.append('pdf_mode', pdfMode);
     
@@ -579,6 +581,18 @@ export default function App() {
                 <option value="groq">GROQ CLOUD</option>
                 <option value="gemini">GEMINI AI</option>
               </select>
+
+              <input
+                type="password"
+                placeholder="Enter API Key (Optional if in .env)"
+                value={apiKey}
+                onChange={(e) => {
+                  setApiKey(e.target.value);
+                  localStorage.setItem('cipher_api_key', e.target.value);
+                }}
+                className="system-status"
+                style={{ background: 'rgba(9, 13, 26, 0.9)', outline: 'none', color: '#cdd6f4', border: '1px solid rgba(205, 214, 244, 0.15)', width: '220px' }}
+              />
 
               <div className={`system-status ${isProcessing ? 'scanning' : ''}`}>
                 <span className="pulse-dot"></span>
